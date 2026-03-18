@@ -19,11 +19,9 @@ fun AppNavigation() {
 
     val playerName by gameViewModel.playerName.collectAsState()
     val moves by gameViewModel.moves.collectAsState()
+    val elapsedSeconds by gameViewModel.elapsedSeconds.collectAsState()
 
-    NavHost(
-        navController = navController,
-        startDestination = Routes.HOME
-    ) {
+    NavHost(navController = navController, startDestination = Routes.HOME) {
         composable(Routes.HOME) {
             HomeScreen(
                 playerName = playerName,
@@ -34,7 +32,6 @@ fun AppNavigation() {
                 }
             )
         }
-
         composable(Routes.GAME) {
             MemoryGameScreen(
                 viewModel = gameViewModel,
@@ -43,11 +40,11 @@ fun AppNavigation() {
                 }
             )
         }
-
         composable(Routes.RESULT) {
             ResultScreen(
                 playerName = playerName,
                 moves = moves,
+                elapsedSeconds = elapsedSeconds,
                 onPlayAgain = {
                     gameViewModel.startGame()
                     navController.navigate(Routes.GAME)

@@ -1,4 +1,4 @@
-package com.example.seguimiento1.features.memory_game.components
+package com.example.game.features.memory_game.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,7 +29,10 @@ fun MemoryCardItem(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.primaryContainer),
+                .background(
+                    if (card.isMatched) MaterialTheme.colorScheme.tertiaryContainer
+                    else MaterialTheme.colorScheme.primaryContainer
+                ),
             contentAlignment = Alignment.Center
         ) {
             Text(

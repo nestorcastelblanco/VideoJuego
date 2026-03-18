@@ -1,13 +1,7 @@
 package com.example.game.features.memory_game.result
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,9 +10,14 @@ import androidx.compose.ui.unit.dp
 fun ResultScreen(
     playerName: String,
     moves: Int,
+    elapsedSeconds: Int,
     onPlayAgain: () -> Unit,
     onBackHome: () -> Unit
 ) {
+    val minutes = elapsedSeconds / 60
+    val seconds = elapsedSeconds % 60
+    val timeText = "%02d:%02d".format(minutes, seconds)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -26,33 +25,24 @@ fun ResultScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Resultados",
+            text = "¡Juego terminado!",
             style = MaterialTheme.typography.headlineMedium
         )
 
-        Card(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(text = "Jugador: $playerName")
-                Text(text = "Movimientos realizados: $moves")
-                Text(text = "¡Completaste todas las parejas!")
+        Card(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(text = "Jugador: $playerName",
+                    style = MaterialTheme.typography.titleMedium)
+                Text(text = "Movimientos: $moves")
+                Text(text = "Tiempo: $timeText")
+                Text(text = "¡Encontraste todas las parejas! 🎉")
             }
         }
 
-        Button(
-            onClick = onPlayAgain,
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        Button(onClick = onPlayAgain, modifier = Modifier.fillMaxWidth()) {
             Text("Jugar de nuevo")
         }
-
-        Button(
-            onClick = onBackHome,
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        Button(onClick = onBackHome, modifier = Modifier.fillMaxWidth()) {
             Text("Volver al inicio")
         }
     }

@@ -1,23 +1,16 @@
 package com.example.game.features.memory_game
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.seguimiento1.features.memory_game.components.MemoryCardItem
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import com.example.game.features.memory_game.components.MemoryCardItem
 
 @Composable
 fun MemoryGameScreen(
@@ -27,12 +20,18 @@ fun MemoryGameScreen(
     val cards by viewModel.cards.collectAsState()
     val moves by viewModel.moves.collectAsState()
     val playerName by viewModel.playerName.collectAsState()
+    val isGameFinished by viewModel.isGameFinished.collectAsState()
+    val elapsedSeconds by viewModel.elapsedSeconds.collectAsState()
 
-    LaunchedEffect(cards) {
-        if (viewModel.isGameFinished()) {
+    LaunchedEffect(isGameFinished) {
+        if (isGameFinished) {
             onGameFinished()
         }
     }
+
+    val minutes = elapsedSeconds / 60
+    val seconds = elapsedSeconds % 60
+    val timeText = "%02d:%02d".format(minutes, seconds)
 
     Column(
         modifier = Modifier
@@ -44,9 +43,12 @@ fun MemoryGameScreen(
             text = "Jugador: $playerName",
             style = MaterialTheme.typography.titleMedium
         )
-
         Text(
             text = "Movimientos: $moves",
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Text(
+            text = "Tiempo: $timeText",
             style = MaterialTheme.typography.bodyLarge
         )
 
